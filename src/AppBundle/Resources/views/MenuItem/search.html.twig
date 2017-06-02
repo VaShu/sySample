@@ -1,0 +1,63 @@
+{% extends "::baseAdmin.html.twig" %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <br>
+            <h3 class="pull-left" style="margin: 0; padding: 0;">Problems list <a href="{{ path("admin_problem_new") }}" class="btn btn-sm btn-success btn-raised"><i class="fa fa-fw fa-heart-o"></i> Add problem</a></h3>
+            <div class="text-right filter-form">
+                {{ form_start(filterForm, {'action': path('admin_problem_search'), 'attr': {'novalidate': 'novalidate', 'class': 'inline-form'}}) }}
+                <div class="form-group show-inline">
+                    {{ form_widget(filterForm.search, {'attr': {'placeholder': 'Search by problem name'}}) }}
+                    <button type="submit" class="btn btn-default btn-sm btn-raised" style="margin-left: 15px;"><i class="fa fa-filter fa-fw"></i>&nbsp;Search</button>
+                    <a href="{{ path("admin_problem_list") }}" class="btn btn-sm btn-warning btn-raised" style="margin-left: 15px;"><i class="fa fa-refresh fa-fw"></i>&nbsp;Reset</a>
+                </div>
+                <div class="hidden">
+                    {{ form_rest(filterForm) }}
+                </div>
+
+                {{ form_end(filterForm) }}
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    {% if paginator %}
+                        <th>#</th>
+                        <th>{{ knp_pagination_sortable(problems, 'Name', 'p.name') }}</th>
+                        <th class="text-center">Action</th>
+                    {% else %}
+                        <th>#</th>
+                        <th>Name</th>
+                        <th class="text-center">Action</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for problem in problems %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            {{ problem.name }}
+                        </td>
+                        <td class="text-center">
+                            {{ render(controller('AppBundle:Admin/Problem:delete', {id: problem.id})) }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% if paginator %}
+                <div class="text-center">
+                    {{ knp_pagination_render(problems) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock content %}

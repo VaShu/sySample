@@ -1,0 +1,16 @@
+{% block subItems %}
+
+    <ul>
+
+        {% for item in menuItems %}
+            <li>
+                <a href="{{ item.url }}">{{ item.title }}</a>
+                {% if item.getParent != null %}
+                    {% include  'AppBundle:MenuItem:sub-items.html.twig' with {'menuItems': item.childs} %}
+                {% endif %}
+            </li>
+        {% endfor %}
+
+    </ul>
+
+{% endblock %}
